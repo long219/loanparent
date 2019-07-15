@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.panshi.locan.mapper.UserMapper">
+
+    <!--查询用户所有信息-->
+    <select id="userAll" resultType="userVO">
+        SELECT
+            id,
+            NAME,
+            PASSWORD,
+            iphone,
+            identity_card,
+            regist_time,
+            opening_bank,
+            bank_card,
+            identity_card_img,
+            bank_img,
+            quota,
+            audit_status
+        FROM
+            loan_user_t
+    </select>
+
+    <!--根据用户手机号查询-->
+    <select id="queryByIphone" resultType="userVO" >
+         SELECT
+            id,
+            name,
+            password,
+            iphone,
+            identity_card,
+            regist_time,
+            opening_bank,
+            bank_card,
+            identity_card_img,
+            bank_img,
+            quota,
+            audit_status
+         FROM
+            loan_user_t where iphone=#{iphone}
+    </select>
+
+    <!--根据id查询-->
+    <select id="queryById" resultType="userVO">
+         SELECT
+            id,
+            NAME,
+            PASSWORD,
+            iphone,
+            identity_card,
+            regist_time,
+            opening_bank,
+            bank_card,
+            identity_card_img,
+            bank_img,
+            quota,
+            audit_status
+         FROM
+            loan_user_t where id=#{id}
+    </select>
+
+
+    <!--增加用户-->
+    <insert id="userAdd" >
+        insert into loan_user_t (id,iphone,password,regist_time) values ((
+        select nullif(max(id),0)+1 from (select * from loan_user_t) u),#{iphone},#{password},now())
+    </insert>
+
+    <!--删除用户-->
+    <delete id="userDelete" >
+        delete from loan_user_t where id=#{id}
+    </delete>
+
+    <!--修改用户-->
+    <update id="userUpdate" >
+        UPDATE loan_user_t
+        SET NAME = #{name},
+            iphone=#{iphone} ,
+            identity_card = #{identity_card} ,
+            opening_bank = #{opening_bank} ,
+            bank_card = #{bank_card}
+        WHERE
+            id = #{id}
+    </update>
+
+    <!--修改用户身份证,银行卡图片-->
+    <update id="updateByIdBankCard" >
+        UPDATE loan_user_t
+        SET identity_card_img = #{identity_card_img},
+        bank_img = #{bank_img}
+        WHERE
+            id = #{id}
+    </update>
+
+    <!--添加额度-->
+    <update id="updateByIdMoney" >
+        UPDATE loan_user_t
+        SET quota = #{money}
+        WHERE
+            id = #{id}
+    </update>
+
+    <!--修改额度-->
+    <update id="updateByIdQuota" >
+        UPDATE loan_user_t
+        SET quota = ( SELECT SUM( quota ) - #{borrowMoney} FROM ( SELECT * FROM loan_user_t WHERE id = #{id} ) lu )
+        WHERE
+            id = #{id}
+    </update>
+
+    <!--修改状态-->
+    <update id="updateState">
+        UPDATE loan_user_t
+        SET audit_status = #{audit_status}
+        WHERE
+            id = #{id}
+    </update>
+
+    <!--查询总条记录-->
+    <select id="total" resultType="int">
+        select  count(1) from loan_user_t
+    </select>
+
+
+</mapper>

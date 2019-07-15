@@ -1,0 +1,56 @@
+server.port: 9999
+
+#开启日志
+#debug: true
+
+#日志配置
+logging:
+  level.*: debug
+
+mybatis:
+  type-aliases-package: com.panshi.locan.domain
+  mapper-locations: /mapper/*.xml
+
+#配置分页
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+#配置资源文件
+#spring:
+  #datasource:
+    #url: jdbc:mysql://127.0.0.1:3306/loan
+    #username: root
+    #password: 123456
+    #driver-class-name: com.mysql.jdbc.Driver
+
+  #配置访问静态资源文件
+  resources:
+    static-locations: classpath:/META-INF/resources/,classpath:/resources/,classpath:/static/,classpath:/public/,file:D:/学习资料/高级课学习资料/作业/小额贷款/image
+  mvc:
+    static-path-pattern: /**
+
+
+
+#设置银行卡,身份证图片的路径
+filePath:
+  name: D:\学习资料\高级课学习资料\作业\小额贷款\image
+  imgPath: http://127.0.0.1:9999
+
+
+#配置七牛云
+qiniu:
+  AccessKey: bIxaWHuB_J7SZEzALhzMryNLaoZXeM8sy2krko5t
+  SecretKey: m6uqddDcB-Gn4kHTjVswe5heedwpOYMaWkOOyqba
+
+  #七牛空间名
+  Bucket: ohniv
+
+  # 外链访问路径
+  dn.prefix: pucwxheom.bkt.clouddn.com
+
+
+zk.hosPath: "127.0.0.1/config"
+zk.nodeName: "/loan"

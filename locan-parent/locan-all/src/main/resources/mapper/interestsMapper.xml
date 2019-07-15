@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.panshi.locan.mapper.InterestsMapper">
+
+    <!--查询利息信息-->
+    <select id="query" resultType="interests">
+        select * FROM loan_configuration_table
+    </select>
+
+
+    <!--修改修改-->
+    <update id="update" >
+        update loan_configuration_table set interest=#{interest} where id=#{id}
+    </update>
+
+</mapper>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.panshi.locan.mapper.NoteMapper">
+
+    <!--查询所有短信信息-->
+    <select id="queryAll" resultType="noteVO">
+         SELECT id,iphone ,short_message , type,note_time  FROM loan_message_table
+    </select>
+
+    <!--根据手机查询-->
+    <select id="queryByIphone" resultType="noteVO">
+        SELECT
+            id,
+            iphone,
+            short_message,
+            type,
+            note_time
+        FROM
+            loan_message_table
+        WHERE
+            id = ( SELECT MAX( m.id ) FROM loan_message_table m WHERE iphone = #{iphone} ) AND type=#{type}
+    </select>
+
+    <!--添加短信-->
+    <insert id="addNote" >
+        insert into loan_message_table (id,iphone,short_message,type,note_time) values ((
+        select nullif(max(id),0)+1 from (select * from loan_message_table) u),#{iphone},#{short_message},#{type},now())
+    </insert>
+
+    <!--修改短信-->
+    <update id="updateNote" >
+        update loan_message_table set short_message=#{short_message} where iphone=#{iphone}
+    </update>
+
+
+</mapper>

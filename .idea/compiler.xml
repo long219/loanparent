@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="locan-all" />
+        <module name="locan-h5-api" />
+        <module name="locan-admin-api" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="locan-admin-api" target="1.8" />
+      <module name="locan-all" target="1.8" />
+      <module name="locan-h5-api" target="1.8" />
+      <module name="locan-parent" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="locan-admin-api" options="-parameters" />
+      <module name="locan-all" options="-parameters" />
+      <module name="locan-h5-api" options="-parameters" />
+    </option>
+  </component>
+</project>

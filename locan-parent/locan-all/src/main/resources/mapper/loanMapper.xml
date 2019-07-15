@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.panshi.locan.mapper.BorrowMapper">
+
+    <resultMap id="borrowMap" type="borrowVO">
+        <id column="id" property="id"/>
+        <result column="borrow_money" property="borrow_money" />
+        <result column="borrow_number" property="borrow_number" />
+        <result column="borrow_time" property="borrow_time" />
+        <result column="user_id" property="user_id" />
+        <result column="total_interest" property="total_interest" />
+        <result column="name" property="userVO.name" />
+        <result column="iphone" property="userVO.iphone" />
+        <result column="opening_bank" property="userVO.opening_bank" />
+    </resultMap>
+
+
+    <!--查询贷款所有信息-->
+    <select id="queryAll" resultMap="borrowMap">
+        SELECT
+            b.id,
+            b.borrow_money,
+            b.borrow_number,
+            b.borrow_time,
+            b.user_id,
+            b.total_interest,
+            b.audit_status,
+            u.name,
+            u.iphone,
+            u.opening_bank
+        FROM
+            loan_borrow_money_t b LEFT JOIN loan_user_t u ON(b.user_id=u.id)
+    </select>
+
+
+    <!--根据贷款Id查询贷款信息-->
+    <select id="queryById" resultType="borrowVO">
+        SELECT
+            id,
+            borrow_money,
+            borrow_number,
+            borrow_time,
+            user_id,
+            total_interest,
+            audit_status
+        FROM
+            loan_borrow_money_t where id = #{id} and user_id=#{user_id}
+    </select>
+
+    <!--根据用户id 查询贷款信息-->
+    <select id="queryByUserId" resultType="borrowVO">
+       SELECT
+            b.id,
+            b.borrow_money,
+            b.borrow_number,
+            b.borrow_time,
+            b.user_id,
+            b.total_interest,
+            b.audit_status ,
+            r.repayment_type as repayment_state
+        FROM
+            (SELECT * FROM loan_borrow_money_t  WHERE id = (select MAX(bm.id) from loan_borrow_money_t bm)) as b
+            LEFT JOIN loan_repayment_t r ON (b.id=r.borrow_id) WHERE b.user_id=#{user_id};
+    </select>
+
+
+    <!--添加借款信息-->
+    <insert id="add">
+       INSERT INTO loan_borrow_money_t ( id, borrow_money, borrow_number, borrow_time, total_interest, user_id )
+        VALUES
+            (
+            ( SELECT IFNULL( MAX( id ), 0 ) + 1 FROM ( SELECT * FROM loan_borrow_money_t ) u ),
+            #{borrow_money},
+            #{borrow_number},
+            NOW(),
+            (select ( interest * #{borrow_money} ) from loan_configuration_table c),
+            #{user_id }
+            )
+    </insert>
+
+
+    <!--修改用户-->
+    <update id="updateState" >
+        update loan_borrow_money_t set audit_status=#{audit_status} where id=#{id}
+    </update>
+
+</mapper>

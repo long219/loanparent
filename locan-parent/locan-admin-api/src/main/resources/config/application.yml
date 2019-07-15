@@ -1,0 +1,31 @@
+server:
+  port: 8888
+
+
+mybatis:
+  type-aliases-package: com.panshi.locan.domain
+  mapper-locations: /mapper/*.xml
+
+#配置资源文件
+
+
+
+#配置七牛云
+qiniu:
+  AccessKey: bIxaWHuB_J7SZEzALhzMryNLaoZXeM8sy2krko5t
+  SecretKey: m6uqddDcB-Gn4kHTjVswe5heedwpOYMaWkOOyqba
+
+  #七牛空间名
+  Bucket: ohniv
+
+  # 外链访问路径
+  dn.prefix: pucwxheom.bkt.clouddn.com
+
+#设置银行卡,身份证图片的路径
+#filePath:
+
+# name: D:\Idea_Wed\loanparent\locan-parent\locan-all\src\main\resources\static\image
+
+
+zk.hosPath: "127.0.0.1/config"
+zk.nodeName: "/loan"
